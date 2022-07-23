@@ -4,12 +4,14 @@ from markupsafe import escape
 import json
 from tinydb import TinyDB, Query
 
+# Initialize a simple empty database to simulate real life database that we can query 
 db = TinyDB('./empty.json')
 db.drop_tables()
 
 with open('./db.json', 'r') as file:
     data = json.load(file)
 
+# Fill the database, with small modification on entries to make them suitable for expected output
 for location in data:
     destination = location.capitalize()
     for hotel in data[location]:
@@ -25,6 +27,7 @@ def hotels():
     if "stars" in request.args:
         stars = escape(request.args.get('stars', ''))
 
+    # No stars value provided, return all hotels
     if(stars is None):
         return json.dumps(db.all())
 
